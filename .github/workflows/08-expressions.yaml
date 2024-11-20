@@ -62,7 +62,7 @@ jobs:
             echo "This PR fixes a bug."
       
       - name: "Sleep and Cancel"
-        run: sleep(20)  
+        run: sleep 20  
     
       - name: "Failing Step"
         if: ${{inputs.fail}}

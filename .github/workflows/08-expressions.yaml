@@ -1,14 +1,15 @@
 name: 08 Expressions
 on: 
-  pull request:    
-  workflow_dispatch: 
-    inputs:
-        debug: 
-            type: boolean
-            default: false
-        fail: 
-            type: boolean
-            default: false      
+    pull_request:
+    workflow_dispatch: 
+        inputs:
+            debug: 
+                type: boolean
+                default: false
+            fail: 
+                type: boolean
+                default: false      
+    
 env:       
     WORKFLOW_VAR: 'This is a workflow-level variable'
     OVERWRITTEN: 'Default workflow value'
@@ -41,22 +42,22 @@ jobs:
       - name: "Overwrite and Print"
         env:
             OVERWRITTEN : 'Overwritten at step level'
-        run: echo "Overwritten var: $OVERWRITTEN"
-            
-jobs:
-  unctions-pr-data:
+        run: |
+           echo "Overwritten var: $OVERWRITTEN"
+
+  functions-pr-data:
     runs-on: ubuntu-latest
     steps:
       - name: "Print PR Info"
-        if: ${{github.event_name =="pull_request"}} 
+        if: ${{github.event_name =='pull_request'}} 
         run: |
-            echo "${{ github.events.pull_request.name }}"
+            echo "${{ github.event.pull_request.title }}"
             cat << EOF
             ${{ toJSON(github.event.pull_request.labels) }}
             EOF
       
       - name: "Bug Check"
-        if: ${{!cancelled() && contains(github.event.pull_request.title,"fix" }}
+        if: ${{!cancelled() && contains(github.event.pull_request.title,'fix') }}
         run: |
             echo "This PR fixes a bug."
       
@@ -76,7 +77,7 @@ jobs:
         run: |
             echo "A previous step failed."                
       - name: "Print Always"
-        if: ${{alwais()}}
+        if: ${{always()}}
         run: |
             echo "This step runs unless the workflow is cancelled."               
       - name: "On Cancel"
